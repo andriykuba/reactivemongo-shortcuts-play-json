@@ -21,6 +21,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import play.api.libs.json.Json
 import org.mongodb.scala.Completed
+import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.NotUniqueDocumentException
 
 @RunWith(classOf[JUnitRunner])
 class CollectionTest 
@@ -31,16 +32,16 @@ class CollectionTest
   with BeforeAndAfterAll
   with OneAppPerSuite{
 
-  val mongoProt = 12345 
+  val testMongoProt = 12345 
   val testDatabaseName = "shortcuts"
   val testCollectionName = "app.users"
-  var mongoProps: MongodProps = null
+  val testTimeout = 10 seconds
   
   lazy val injector = 
     new GuiceApplicationBuilder()
       .configure(Map(
           "mongodb.uri" -> 
-            ("mongodb://localhost:" + mongoProt.toString + "/" + testDatabaseName),
+            ("mongodb://localhost:" + testMongoProt.toString + "/" + testDatabaseName),
           "mongo-async-driver.akka.loglevel" -> "WARNING"))
       .bindings(new play.modules.reactivemongo.ReactiveMongoModule)
       .injector
@@ -48,15 +49,37 @@ class CollectionTest
   implicit lazy val mongo = injector.instanceOf[ReactiveMongoApi]
   implicit lazy val context = injector.instanceOf[ExecutionContext]
   
+  object TestCollection extends Collection{
+      val collectionName = testCollectionName
+  }
+  
+  var mongoProps: MongodProps = null
+
   override def beforeAll()  = {
-    mongoProps = mongoStart(mongoProt)  
+    mongoProps = mongoStart(testMongoProt)  
+    prepareTestData() 
+  }
+  
+  override def afterAll() = { 
+    mongoStop(mongoProps) 
+  }
+  
+  def prepareTestData() = {
+    val mongoClient: MongoClient = 
+    MongoClient("mongodb://localhost:" + testMongoProt.toString)
     
-    // Prepare test data
-    val mongoClient: MongoClient = MongoClient("mongodb://localhost:"+mongoProt.toString)
-    val database: MongoDatabase = mongoClient.getDatabase(testDatabaseName)
-    val collection: MongoCollection[Document] = database.getCollection(testCollectionName);
+    val database: MongoDatabase = 
+      mongoClient.getDatabase(testDatabaseName)
+      
+    val collection: MongoCollection[Document] = 
+      database.getCollection(testCollectionName);
     
-    val documents = (1 to 100) map { i: Int => Document("name" -> ("name_" + i.toString)) }
+    val documents = (1 to 100) map { i: Int => {
+      val even = i % 2 == 0
+      Document(
+          "name" -> ("name_" + i.toString),
+          "even" -> even) 
+    }}
     
     collection.insertMany(documents).subscribe(
       (res: Completed) => println("Documents was inserted"),
@@ -67,11 +90,7 @@ class CollectionTest
       () => {
         println("Completed")
         mongoClient.close()
-    })    
-  }
-  
-  override def afterAll() = { 
-    mongoStop(mongoProps) 
+    })
   }
   
   "Shorcuts" should "extend collection" in {
@@ -95,29 +114,57 @@ class CollectionTest
   }
   
   it should "get collection" in {
-    object Users extends Collection{
-      val collectionName = testCollectionName
-    }
-    
     val result = for{
-      c <- Users.collection()
+      c <- TestCollection.collection()
       count <- c.count()
     } yield {
       c.name should be (testCollectionName)
       count should be (100)
     }   
     
-    Await.result(result, 10 seconds)
+    Await.result(result, testTimeout)
   }
   
- it should "find all documents"
- it should "find zero or one document"
- it should "find a first document"
- it should "fold the collection"
- it should "fold the collection asynchroniously"
- it should "update the documents"
- it should "remove the doucment"
- it should "get an optional field from a document"
- it should "get a field from a document"
- it should "get a string field from a document"
+  it should "find all documents" in 
+    Await.result(
+      TestCollection
+        .all(Json.obj("even" -> true))
+        .map(r => r.size should be (50)), 
+      testTimeout)
+ 
+  it should "find a document" in 
+    Await.result(
+      TestCollection
+        .one(Json.obj("name" -> "name_15"))
+        .map(r => r.isDefined should be (true)), 
+      testTimeout)
+  
+  it should "not find a document" in 
+    Await.result(
+      TestCollection
+        .one(Json.obj("name" -> "name_150"))
+        .map(r => r.isDefined should be (false)), 
+      testTimeout)    
+  
+  it should "throw NotUniqueDocumentException exception" in {
+    val exception = intercept[NotUniqueDocumentException]{
+      Await.result(
+      TestCollection
+        .one(Json.obj("even" -> true))
+        .map(r => r),
+      testTimeout)
+    }
+    
+    exception.getMessage should equal ("There are 50 documents.")
+  }
+      
+  it should "find a first document"
+  it should "fold the collection"
+  it should "fold the collection asynchroniously"
+  it should "update the documents"
+  it should "remove the doucment"
+  it should "get an optional field from a document"
+  it should "get a field from a document"
+  it should "get a string field from a document"
+  it should "throw error"
 }
