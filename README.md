@@ -46,38 +46,73 @@ object Users extends Collection{
 val allUsersInLondon = Users.all(Json.obj("city" -> "London"))
 ```
 
-##### collectionName
+## Methods
+
+#### collectionName
 
 The name of the collection in MongoDB
 
-##### defineSubCollectionName
+#### defineSubCollectionName
 
-##### collection
+Sugar for creating name of higher detailed collection. For example you need 
+to create a collection of user's page visits and you already have the "users" 
+collection. Good naming are:
+
+```
+users
+users.pagevisits
+```
+
+So you can do 
+
+```scala
+object Users extends Collection{
+  val collectionName = "users"
+}
+
+object UsersPagevisits extends Collection{
+  val collectionName = "users.pagevisits"
+}
+```
+
+or
+
+```scala
+object Users extends Collection{
+  val collectionName = "users"
+}
+
+object UsersPagevisits extends Collection{
+  val collectionName = Users.defineSubCollectionName("pagevisits")
+}
+```
+
+#### collection
 
 ### Document
 
-##### all
+#### all
 
-##### one
+#### one
 
-##### first
+#### first
 
-##### fold
+#### fold
 
-##### foldM
+#### foldM
 
 ### Field
 
-##### fieldOpt[T]
+#### fieldOpt[T]
 
-##### field[T]
+#### field[T]
 
-##### fieldStringOrEmpty
+#### fieldStringOrEmpty
 
 ### Update/Create
 
-##### update
+#### update
 
 ### Remove
 
-##### remove
+#### remove
