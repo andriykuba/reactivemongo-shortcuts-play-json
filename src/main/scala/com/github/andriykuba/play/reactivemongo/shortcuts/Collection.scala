@@ -259,7 +259,7 @@ trait Collection extends CursorProducerEnchanceImplicit{
                : Future[T] =
     fieldOpt[T](selector, name).map{
       case Some(v) => v
-      case None => throw FieldNotFoundException("no such field: " + name)
+      case None => throw FieldNotFoundException("No such field: " + name)
     }
   
   /**
