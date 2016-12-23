@@ -33,7 +33,7 @@ trait CursorProducerEnchanceImplicit{
      */
     def one()(implicit ec: ExecutionContext) = 
       cursorProducer.flatMap(_
-        .collect[List](Int.MaxValue, errorHandlerList())
+        .collect[List](-1, errorHandlerList())
         .map(docs => if(docs.isEmpty){
           None 
         } else if (docs.tail.isEmpty){
