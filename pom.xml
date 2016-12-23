@@ -146,6 +146,13 @@
        <scope>test</scope>
     </dependency>
     
+    <dependency>
+        <groupId>org.mongodb.scala</groupId>
+        <artifactId>mongo-scala-driver_2.11</artifactId>
+        <version>1.2.1</version>
+        <scope>test</scope>
+    </dependency>
+    
   </dependencies>
   
   <build>
