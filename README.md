@@ -63,7 +63,7 @@ users
 users.pagevisits
 ```
 
-So you can do 
+So you can do:
 
 ```scala
 object Users extends Collection{
@@ -75,7 +75,7 @@ object UsersPagevisits extends Collection{
 }
 ```
 
-or
+Or:
 
 ```scala
 object Users extends Collection{
@@ -88,6 +88,20 @@ object UsersPagevisits extends Collection{
 ```
 
 #### collection
+
+Shortcut for getting database and the collection.
+
+So this string
+
+```scala
+mongo.database.map(_.collection[JSONCollection](collectionName))
+```
+
+become as short as
+
+```scala
+collection()
+```
 
 ### Document
 
