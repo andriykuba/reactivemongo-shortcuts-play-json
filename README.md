@@ -9,7 +9,7 @@ Scala language.
 
 ## Usage
 
-Suppose, we want to get some field from all document. 
+Suppose, we want to get some field from all documents. 
 The "native" ReactiveMongo code will look like:
 
 ```scala
@@ -34,7 +34,7 @@ The Shortcuts reduce method "chaining" to one call
 and use [Play Framework JSON](https://www.playframework.com/documentation/2.5.x/ScalaJson) 
 to work with data.
 
-To start use the Shortcuts just extend `com.github.andriykuba.play.reactivemongo.shortcuts.Collection`
+To start use shortcuts just extend `com.github.andriykuba.play.reactivemongo.shortcuts.Collection`
 
 ```scala
 object Users extends Collection{
@@ -112,7 +112,7 @@ MyCollection.collection()
 
 Fold the collection. 
 A start value and a fold function are set with the `Folder` case class.
-Projection and sort criteria can be used as well.
+Projection and sort can also be used.
 
 ```scala
 val folder = Folder(0, (count: Int, doc: JsObject) => {
@@ -126,7 +126,7 @@ MyCollection.fold(Json.obj("age" -> 20), folder)
 
 Fold the collection asynchronously. 
 A start value and a fold function are set with the `FolderM` case class.
-Projection and sort criteria can be used as well.
+Projection and sort can also be used.
 
 ```scala
 val folderM = FolderM(0, (count: Int, doc: JsObject) => {
@@ -141,7 +141,7 @@ MyCollection.foldM(Json.obj("age" -> 20), folderM)
 #### all
 
 Find all documents. It returns a list of `JsObject`. 
-Projection and sort criteria can be used as well.
+Projection and sort can also be used.
 
 ```scala
 MyCollection.all(Json.obj("age" -> 30))
@@ -151,7 +151,7 @@ MyCollection.all(Json.obj("age" -> 30))
 
 Find zero or one document. 
 It throw an exception if more than one document found. 
-Projection can be used as well.
+Projection can also be used.
 
 ```scala
 MyCollection.one(Json.obj("name" -> "Adam Smith"))
@@ -161,7 +161,7 @@ MyCollection.one(Json.obj("name" -> "Adam Smith"))
 
 Find zero or one document. 
 It returns first document if more than one document found. 
-Projection and sort criteria can be used as well.
+Projection and sort can also be used.
 
 ```scala
 MyCollection.first(Json.obj("age" -> 40))
@@ -204,6 +204,28 @@ MyCollection.fieldStringOrEmpty(Json.obj("name"->"Adam Smith"), "address")
 
 #### update
 
+Update matching document (using `findAndModify`). 
+This method is also used for document creation (`upsert = true`).
+
+```scala
+MyCollection.update(
+  Json.obj("name"->"Adam Smith"), 
+  Json.obj("$set" -> Json.obj("age" -> 80)))  
+  
+  
+MyCollection.update(
+  mySelector, 
+  myDocument,
+  upsert = true)   
+```
+
 ### Remove
 
 #### remove
+
+Remove matching document (using `findAndModify`).
+Return `true` if document was removed or `false` if it was not found
+
+```scala
+MyCollection.remove(Json.obj("name"->"Adam Smith"))  
+```   
