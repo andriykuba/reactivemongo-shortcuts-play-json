@@ -230,7 +230,7 @@ trait Collection extends CursorProducerEnchanceImplicit{
   /**
    * Get a field from a single document.
    * 
-   * Field type `T` obligatory 
+   * Field type `T` is obligatory 
    * 
    * @param [T]  type of the field
    * @param selector  the document selector
@@ -246,7 +246,7 @@ trait Collection extends CursorProducerEnchanceImplicit{
   /**
    * Get a field from a single document.
    * 
-   * Field type `T` obligatory 
+   * Field type `T` is obligatory 
    * 
    * @param [T]  type of the field
    * @param selector  the document selector
@@ -264,7 +264,7 @@ trait Collection extends CursorProducerEnchanceImplicit{
   
   /**
    * Get a string field from a single document or empty string 
-   * in the case of no document or filed.
+   * if no document or file was found.
    * 
    * Empty string returned if no document was found 
    * or no field was found in the document.

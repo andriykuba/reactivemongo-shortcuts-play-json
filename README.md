@@ -171,9 +171,34 @@ MyCollection.first(Json.obj("age" -> 40))
 
 #### fieldOpt[T]
 
+Get an optional field from a single document.
+Throw an exception if more than one document is found.
+Field type `T` is obligatory.
+
+```scala
+MyCollection.fieldOpt[Int](Json.obj("name"->"Adam Smith"), "age")
+```
+
 #### field[T]
 
+Get a field from a single document. It throws an exception if no document 
+or field are found.
+Throw an exception if more than one document is found.
+Field type `T` is obligatory.
+
+```scala
+MyCollection.field[Int](Json.obj("name"->"Adam Smith"), "age")
+```
+
 #### fieldStringOrEmpty
+
+Get a string field from a single document or empty string 
+if no document or file was found. 
+Throw an exception if more than one document is found.
+
+```scala
+MyCollection.fieldStringOrEmpty(Json.obj("name"->"Adam Smith"), "address")
+```
 
 ### Update/Create
 
