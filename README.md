@@ -4,7 +4,28 @@ Reduce code for the common cases of ReactiveMongo usage in Play framework,
 Scala language. 
 
 #### Table of Contents
-
+- [Install](#)
+- [Usage](#)
+- [Methods and properties](#)
+  - [Collection](#)
+    - [collectionName](#)
+    - [defineSubCollectionName](#)
+    - [collection](#)
+    - [fold](#)
+    - [foldM](#)
+  - [Document](#)
+    - [all](#)
+    - [one](#)
+    - [first](#)
+  - [Field](#)
+    - [fieldOpt[T]](#)
+    - [field[T]](#)
+    - [fieldStringOrEmpty](#)
+  - [Update/Create](#)
+    - [update](#)
+  - [Remove](#)
+    - [remove](#)
+    
 ## Install
 
 ## Usage
@@ -224,7 +245,7 @@ MyCollection.update(
 #### remove
 
 Remove matching document (using `findAndModify`).
-Return `true` if document was removed or `false` if it was not found
+Return `true` if document was removed or `false` if it was not found.
 
 ```scala
 MyCollection.remove(Json.obj("name"->"Adam Smith"))  
