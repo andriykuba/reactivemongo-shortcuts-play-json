@@ -110,7 +110,31 @@ MyCollection.collection()
 ```
 #### fold
 
+Fold the collection. 
+A start value and a fold function are set with the `Folder` case class.
+Projection and sort criteria can be used as well.
+
+```scala
+val folder = Folder(0, (count: Int, doc: JsObject) => {
+  count + 1
+})
+
+MyCollection.fold(Json.obj("age" -> 20), folder)
+```
+
 #### foldM
+
+Fold the collection asynchronously. 
+A start value and a fold function are set with the `FolderM` case class.
+Projection and sort criteria can be used as well.
+
+```scala
+val folderM = FolderM(0, (count: Int, doc: JsObject) => {
+  Future(count + 1)
+})
+
+MyCollection.foldM(Json.obj("age" -> 20), folderM)
+```
 
 ### Document
 
@@ -140,7 +164,7 @@ It returns first document if more than one document found.
 Projection and sort criteria can be used as well.
 
 ```scala
-MyCollection.one(Json.obj("name" -> "Adam Smith"))
+MyCollection.first(Json.obj("age" -> 40))
 ```
 
 ### Field
