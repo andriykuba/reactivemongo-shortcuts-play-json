@@ -103,7 +103,7 @@ trait Collection extends CursorProducerEnchanceImplicit{
     find(selector, projection, sort).all()
 
   /**
-   * Find zero or one documents in one method call. 
+   * Find zero or one document in one method call. 
    * Exception will be thrown if more than one document found.
    * 
    * @param selector  the document selector

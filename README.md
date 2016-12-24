@@ -46,7 +46,13 @@ object Users extends Collection{
 val allUsersInLondon = Users.all(Json.obj("city" -> "London"))
 ```
 
-## Methods
+`ReactiveMongoApi` and `ExecutionContext` are passed implicitly to all methods but 
+`defineSubCollectionName`. ReactiveMongo is asynchronous, 
+so all methods but `defineSubCollectionName` return results wrapped in `Future`.
+
+## Methods and properties
+
+### Collection
 
 #### collectionName
 
@@ -89,7 +95,7 @@ object UsersPagevisits extends Collection{
 
 #### collection
 
-Shortcut for getting database and the collection.
+Shortcut for getting a collection from a database.
 
 So this string
 
@@ -100,20 +106,42 @@ mongo.database.map(_.collection[JSONCollection](collectionName))
 become as short as
 
 ```scala
-collection()
+MyCollection.collection()
 ```
+#### fold
+
+#### foldM
 
 ### Document
 
 #### all
 
+Find all documents. It returns a list of `JsObject`. 
+Projection and sort criteria can be used as well.
+
+```scala
+MyCollection.all(Json.obj("age" -> 30))
+```
+
 #### one
+
+Find zero or one document. 
+It throw an exception if more than one document found. 
+Projection can be used as well.
+
+```scala
+MyCollection.one(Json.obj("name" -> "Adam Smith"))
+```
 
 #### first
 
-#### fold
+Find zero or one document. 
+It returns first document if more than one document found. 
+Projection and sort criteria can be used as well.
 
-#### foldM
+```scala
+MyCollection.one(Json.obj("name" -> "Adam Smith"))
+```
 
 ### Field
 
