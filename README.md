@@ -1,5 +1,7 @@
 # Reactivemongo Shortcuts for Play and JSON
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.andriykuba/reactivemongo-shortcuts-play-json/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.andriykuba/reactivemongo-shortcuts-play-json)
+
 Reduce code for the common cases of ReactiveMongo usage in Play framework, 
 Scala language. 
 
@@ -11,6 +13,7 @@ Scala language.
     - [collectionName](#collectionname)
     - [defineSubCollectionName](#definesubcollectionname)
     - [collection](#collection-1)
+    - [count](#count)
     - [fold](#fold)
     - [foldM](#foldm)
   - [Document](#document)
@@ -27,6 +30,11 @@ Scala language.
     - [remove](#remove-1)
     
 ## Install
+
+Add the library in `built.sbt`
+```scala
+libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.2" 
+```
 
 ## Usage
 
@@ -129,6 +137,23 @@ become as short as
 ```scala
 MyCollection.collection()
 ```
+
+#### count
+
+Shortcut for getting a number of documents in the collection.
+
+So this string
+
+```scala
+mongo.database.map(_.collection[JSONCollection](collectionName)).flatMap(c => c.count())
+```
+
+become as short as
+
+```scala
+MyCollection.count()
+```
+
 #### fold
 
 Fold the collection. 

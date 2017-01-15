@@ -52,6 +52,13 @@ trait Collection extends CursorProducerEnchanceImplicit{
                 : Future[JSONCollection] = 
     mongo.database.map(_.collection[JSONCollection](collectionName))  
   
+    
+  /**
+   * Shortcut for the `collection.count()` method
+   */
+  def count()(implicit mongo: ReactiveMongoApi, ec: ExecutionContext): Future[Int] = 
+    collection().flatMap(c => c.count())   
+    
   /**
    * Find in one method call. 
    * It's half-cooked method, that returns `CursorProducer`. 
