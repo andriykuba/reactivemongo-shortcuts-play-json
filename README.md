@@ -20,6 +20,7 @@ Scala language.
     - [all](#all)
     - [one](#one)
     - [first](#first)
+    - [first in a set of collections](#first-in-a-set-of-collections)    
   - [Field](#field)
     - [fieldOpt[T]](#fieldoptt)
     - [field[T]](#fieldt)
@@ -28,12 +29,13 @@ Scala language.
     - [update](#update)
   - [Remove](#remove)
     - [remove](#remove-1)
+- [Field shortcuts] (#field-shortcuts)    
     
 ## Install
 
 Add the library in `built.sbt`
 ```scala
-libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.2" 
+libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.4" 
 ```
 
 ## Usage
@@ -213,6 +215,20 @@ Projection and sort can also be used.
 MyCollection.first(Json.obj("age" -> 40))
 ```
 
+#### first in a set of collections
+
+Look for the first document in a set of collections with different selects.
+
+Scenario to use - check if there is some document in a set of collection that 
+meets the criteria.
+
+```scala
+Collection.first(List(
+    (TrainsCollection, Json.obj("price" -> Json.obj("$lte" -> 100))),
+    (BusesCollection, Json.obj("price" -> Json.obj("$lte" -> 100))),
+    (PlanesCollection, Json.obj("price" -> Json.obj("$lte" -> 100)))))
+```
+
 ### Field
 
 #### fieldOpt[T]
@@ -275,3 +291,6 @@ Return `true` if document was removed or `false` if it was not found.
 ```scala
 MyCollection.remove(Json.obj("name"->"Adam Smith"))  
 ```   
+## Field Shortcuts
+
+In beta, look the source code of the `FieldShortcuts` object

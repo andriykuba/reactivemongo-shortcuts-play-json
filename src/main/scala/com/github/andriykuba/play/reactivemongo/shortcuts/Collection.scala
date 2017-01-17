@@ -1,24 +1,20 @@
 package com.github.andriykuba.play.reactivemongo.shortcuts
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
-import scala.reflect.api.TypeTags
+import scala.concurrent.Future
 import scala.reflect.ClassTag
-import scala.reflect.classTag
-
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
-import play.api.libs.json.JsValue
-
-import play.modules.reactivemongo.ReactiveMongoApi
-
-import reactivemongo.play.json.collection.JSONCollection
-import reactivemongo.api.CursorProducer
-import reactivemongo.play.json._
 
 import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.FieldNotFoundException
-import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.NotUniqueDocumentException
-import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.CursorFails._
+
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
+import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.play.json.JsObjectDocumentWriter
+import reactivemongo.play.json.collection.JSONCollection
+
+import reactivemongo.api.CursorProducer
 
 /**
  * Shortcut of the `JSONCollection` 
@@ -134,7 +130,7 @@ trait Collection extends CursorProducerEnchanceImplicit{
    */    
   def first(selector: JsObject, projection: Option[JsObject] = None, sort: Option[JsObject] = None)
            (implicit mongo: ReactiveMongoApi, ec: ExecutionContext)
-         : Future[Option[JsObject]]=
+           :Future[Option[JsObject]]=
     find(selector, projection, sort).first()
     
   /**
@@ -305,4 +301,30 @@ object Collection{
    * @param max  the maximum number of documents to be retrieved (-1 for unlimited)
    */
   case class FolderM[P, JsObject](start: P, fold: (P, JsObject) => Future[P], max: Int = -1)
+   
+  /**
+   * Look for the first document in a set of collections with different selects
+   * 
+   * @param collections  list of the collection objects and correspondent selects
+   * @return  option JSON document wrapped in a `Future`
+   */
+  def first(collections: List[(Collection, JsObject)])
+           (implicit mongo: ReactiveMongoApi, ec: ExecutionContext)
+           :Future[Option[JsObject]] = {
+    
+    def dig(collections: List[(Collection, JsObject)]):Future[Option[JsObject]] = 
+      collections match {
+        // No documents was found
+        case Nil => Future.successful(None)
+        case h :: t => h._1.first(h._2).flatMap{
+          // Some document is found in the collection
+          case Some(d) => Future.successful(Option(d))
+          // No document found in the collection, look further
+          case None => dig(t)
+        }
+      }
+    dig(collections)
+  }
+             
+    
 }
