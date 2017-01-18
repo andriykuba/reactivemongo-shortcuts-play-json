@@ -5,6 +5,7 @@ import java.time.Instant
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import scala.reflect.ClassTag
+import play.api.libs.json.JsArray
 
 /**
  * Shortcuts for the different operations with fields
@@ -107,7 +108,19 @@ trait FieldShortcuts {
     
     def jsValue(j: JsObject, name: String) = get[JsValue](j, name)
     
-    def listString(j: JsObject, name: String) = get[List[String]](j, name)
+    def seq(j: JsObject, name: String) = get[JsArray](j, name).value
+    
+    def seqOrEmpty(j: JsObject, name: String) = 
+      getOpt[JsArray](j, name).getOrElse(JsArray()).value
+      
+    def seqJsonOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).map(_.as[JsObject])
+    
+    def list(j: JsObject, name: String) = seq(j, name).toList
+    
+    def listOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).toList
+    
+    def listJsonOrEmpty(j: JsObject, name: String) = 
+      seqJsonOrEmpty(j: JsObject, name: String).toList
   }
 
 }

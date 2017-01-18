@@ -7,6 +7,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsPath
 import play.api.libs.json.JsNull
+import play.api.libs.json.JsArray
 
 object JsonShortcuts {
     
@@ -34,17 +35,11 @@ object JsonShortcuts {
     case Some(v) => classTag[T].runtimeClass match{
       case ClassOf.string  => v.asOpt[String].asInstanceOf[Option[T]]
       case ClassOf.jsObject => v.asOpt[JsObject].asInstanceOf[Option[T]]
+      case ClassOf.jsArray => v.asOpt[JsArray].asInstanceOf[Option[T]]
       case ClassOf.int => v.asOpt[Int].asInstanceOf[Option[T]]
       case ClassOf.double => v.asOpt[Double].asInstanceOf[Option[T]]
       case ClassOf.bigDecimal => v.asOpt[BigDecimal].asInstanceOf[Option[T]] 
       case ClassOf.boolean => v.asOpt[Boolean].asInstanceOf[Option[T]] 
-      
-      case ClassOf.listString => v.asOpt[List[String]].asInstanceOf[Option[T]]
-      case ClassOf.listJsObject => v.asOpt[List[JsObject]].asInstanceOf[Option[T]]   
-      case ClassOf.listInt => v.asOpt[List[Int]].asInstanceOf[Option[T]]
-      case ClassOf.listDouble => v.asOpt[List[Double]].asInstanceOf[Option[T]]
-      case ClassOf.listBigDecimal => v.asOpt[List[BigDecimal]].asInstanceOf[Option[T]] 
-      case ClassOf.listBoolean => v.asOpt[List[Boolean]].asInstanceOf[Option[T]]
     }
     case None => None
   }
@@ -55,16 +50,10 @@ object JsonShortcuts {
   private[shortcuts] object ClassOf{
     val string = classOf[String]
     val jsObject = classOf[JsObject]
+    val jsArray = classOf[JsArray]
     val int = classOf[Int]
     val double = classOf[Double]
     val bigDecimal = classOf[BigDecimal]
-    val boolean = classOf[Boolean]
-    
-    val listString = classOf[List[String]]
-    val listJsObject = classOf[List[JsObject]]
-    val listInt = classOf[List[Int]]
-    val listDouble = classOf[List[Double]]
-    val listBigDecimal =  classOf[List[BigDecimal]] 
-    val listBoolean = classOf[List[Boolean]]
+    val boolean = classOf[Boolean]    
   }
 }
