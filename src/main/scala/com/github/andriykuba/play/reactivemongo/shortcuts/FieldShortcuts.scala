@@ -27,6 +27,18 @@ trait FieldShortcuts {
     def field(name: String, value: Instant) = 
       Json.obj(name -> value)
       
+    def fieldElement(name: String, query: JsObject) =   
+      Json.obj(name -> Json.obj("$elemMatch" -> query))
+    
+    def fieldElement(name: String, element: String, value: String): JsObject =   
+      fieldElement(name, Json.obj(element -> value))
+
+    def fieldElement(name: String, element: String, value: Int): JsObject =   
+      fieldElement(name, Json.obj(element -> value))
+      
+    def fieldElement(name: String, element: String, value: Boolean): JsObject =   
+      fieldElement(name, Json.obj(element -> value)) 
+      
     def exist(name: String) = 
       Json.obj(name -> Json.obj("$exists" -> true))
     
