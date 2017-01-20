@@ -10,7 +10,7 @@ import play.api.libs.json.JsArray
 /**
  * Shortcuts for the different operations with fields
  */
-trait FieldShortcuts {
+object FieldShortcuts {
   
   object Query{
     val all = Json.obj()

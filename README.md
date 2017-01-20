@@ -35,7 +35,7 @@ Scala language.
 
 Add the library in `built.sbt`
 ```scala
-libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.6" 
+libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.7" 
 ```
 
 ## Usage
