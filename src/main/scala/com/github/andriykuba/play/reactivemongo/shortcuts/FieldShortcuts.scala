@@ -18,6 +18,11 @@ object FieldShortcuts {
     def field(name: String, value: String) = 
       Json.obj(name -> value)
     
+    def fieldIgnoreCase(name: String, value: String) = Json.obj(
+        name -> Json.obj(
+            "$regex" -> value, 
+            "$options" -> "i")) 
+      
     def field(name: String, value: Int) = 
       Json.obj(name -> value)
     
