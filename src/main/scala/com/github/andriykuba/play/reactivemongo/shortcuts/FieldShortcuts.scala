@@ -20,7 +20,7 @@ object FieldShortcuts {
     
     def fieldIgnoreCase(name: String, value: String) = Json.obj(
         name -> Json.obj(
-            "$regex" -> value, 
+            "$regex" -> ("^" + value + "$") ,
             "$options" -> "i")) 
       
     def field(name: String, value: Int) = 
