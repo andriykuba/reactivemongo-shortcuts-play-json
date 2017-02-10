@@ -15,6 +15,8 @@ import reactivemongo.play.json.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 
 import reactivemongo.api.CursorProducer
+import com.github.andriykuba.play.reactivemongo.shortcuts.FieldShortcuts.Command
+import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.DocumentAlreadyExists
 
 /**
  * Shortcut of the `JSONCollection` 
@@ -198,6 +200,29 @@ trait Collection extends CursorProducerEnchanceImplicit{
           fetchNewObject, 
           upsert).map(_.result[JsObject]))
 
+  /**
+	 * Finds some matching document and creates new document if nothing found. 
+	 * It throws a `DocumentAlreadyExists` exception otherwise
+   * 
+   * @param selector  the document selector
+   * @param create  a document to be created
+   * @return  'true', wrapped in `Future` in the case of successful creation. 
+   *           Throws a `DocumentAlreadyExists` exception in the case 
+   *           if selector match some document.
+   */          
+  def createUnique(
+      selector: JsObject, 
+      create: JsObject)
+      (implicit mongo: ReactiveMongoApi, ec: ExecutionContext)
+      : Future[Boolean] = {
+    val setOnInsert = Command.setOnInsert(create)
+    update(selector, setOnInsert, false, true)
+        .map{
+          case Some(oldDocument) => throw DocumentAlreadyExists(oldDocument)
+          case None => true
+        }
+  }
+  
   /**
    * Inserts a document into the collection and wait for the results.
    * 

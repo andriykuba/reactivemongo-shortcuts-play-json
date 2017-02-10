@@ -36,6 +36,7 @@ import com.github.andriykuba.play.reactivemongo.shortcuts.Collection.Folder
 import com.github.andriykuba.play.reactivemongo.shortcuts.Collection.FolderM
 import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.FieldNotFoundException
 import reactivemongo.core.actors.Exceptions.ClosedException
+import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.DocumentAlreadyExists
 
 @RunWith(classOf[JUnitRunner])
 class CollectionTest 
@@ -297,14 +298,41 @@ class CollectionTest
   it should "insert a document" in 
     Await.result(
       TestCollection
-        .insert(Json.obj("inserted" -> "11:24 2017-02-10"))
+        .insert(Json.obj("name" -> "unlisted_1"))
         .flatMap(r => {
            TestCollection
-             .all(Json.obj("inserted" -> "11:24 2017-02-10"))
+             .all(Json.obj("name" -> "unlisted_1"))
              .map(r => r.size should be (1))
         }),
       testTimeout) 
       
+  it should "create a document" in 
+    Await.result(
+      TestCollection
+        .createUnique(Json.obj("name" -> "unlisted_2"), Json.obj("name" -> "unlisted_2"))
+        .flatMap(r => {
+           TestCollection
+             .all(Json.obj("name" -> "unlisted_2"))
+             .map(r => r.size should be (1))
+        }),
+      testTimeout)   
+      
+  it should "throw DocumentAlreadyExists" in {
+    val exception = intercept[DocumentAlreadyExists]{
+      Await.result(
+        TestCollection
+          .createUnique(Json.obj("name" -> "unlisted_2"), Json.obj("name" -> "unlisted_2"))
+          .flatMap(r => {
+             TestCollection
+               .all(Json.obj("name" -> "unlisted_2"))
+               .map(r => r.size should be (1))
+          }),
+        testTimeout)   
+     }
+    
+    (exception.oldDocument \ "name").as[String] should be ("unlisted_2")
+  }
+  
   it should "throw error" in {
     mongo.connection.close()
     

@@ -27,6 +27,7 @@ Scala language.
     - [fieldStringOrEmpty](#fieldstringorempty)
   - [Update/Create](#updatecreate)
     - [update](#update)
+    - [createUnique](#createunique)
     - [insert](#insert)    
   - [Remove](#remove)
     - [remove](#remove-1)
@@ -36,7 +37,7 @@ Scala language.
 
 Add the library in `built.sbt`
 ```scala
-libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.11" 
+libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.12" 
 ```
 
 ## Usage
@@ -280,6 +281,17 @@ MyCollection.update(
   mySelector, 
   myDocument,
   upsert = true)   
+```
+
+#### createUnique
+
+Finds some matching document and creates new document if nothing found. 
+It throws a `DocumentAlreadyExists` exception otherwise
+
+```scala
+MyCollection.createUnique(
+  Json.obj("name"->"John Silver"), 
+  Json.obj(Json.obj("age" -> 40)))   
 ```
 
 #### insert
