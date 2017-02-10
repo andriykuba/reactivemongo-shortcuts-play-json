@@ -27,6 +27,7 @@ Scala language.
     - [fieldStringOrEmpty](#fieldstringorempty)
   - [Update/Create](#updatecreate)
     - [update](#update)
+    - [insert](#insert)    
   - [Remove](#remove)
     - [remove](#remove-1)
 - [Field shortcuts] (#field-shortcuts)    
@@ -35,7 +36,7 @@ Scala language.
 
 Add the library in `built.sbt`
 ```scala
-libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.10" 
+libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.11" 
 ```
 
 ## Usage
@@ -279,6 +280,16 @@ MyCollection.update(
   mySelector, 
   myDocument,
   upsert = true)   
+```
+
+#### insert
+
+Inserts a document into the collection and wait for the results. 
+
+```scala
+val document = Json.obj("name"->"Adam Smith")
+
+MyCollection.insert(document)  
 ```
 
 ### Remove

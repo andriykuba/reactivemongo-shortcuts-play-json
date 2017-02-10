@@ -61,6 +61,9 @@ object FieldShortcuts {
     
     def >=(name: String, value: Int) = 
       Json.obj(name -> Json.obj("$gte" -> value))
+      
+    def or(selectors: JsObject*) = 
+      Json.obj("$or" -> Json.arr(selectors))
   }
   
   object Command{

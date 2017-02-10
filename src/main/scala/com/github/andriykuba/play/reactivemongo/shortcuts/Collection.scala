@@ -197,7 +197,24 @@ trait Collection extends CursorProducerEnchanceImplicit{
           update = update, 
           fetchNewObject, 
           upsert).map(_.result[JsObject]))
-        
+
+  /**
+   * Inserts a document into the collection and wait for the results.
+   * 
+   * The command is success if it was not fail. 
+   * 
+   * @see <a href="http://reactivemongo.org/releases/0.12/api/index.html#reactivemongo.api.commands.WriteResult">
+   * WriteResult in the Reactivemongo documentation</a>
+   * 
+   * @param document  the document to insert
+   * @return  a `WriteResult` object, wrapped in `Future` 
+   * 								
+   */          
+  def insert(
+      document: JsObject)
+      (implicit mongo: ReactiveMongoApi, ec: ExecutionContext) =
+    collection().flatMap(_.insert(document)) 
+          
   /**
    * Finds some matching document, and removes it (using `findAndModify`).
    * 

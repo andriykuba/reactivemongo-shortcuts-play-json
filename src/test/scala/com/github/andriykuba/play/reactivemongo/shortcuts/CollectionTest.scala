@@ -282,7 +282,7 @@ class CollectionTest
              .map(r => r.size should be (1))
         }),
       testTimeout) 
-      
+
   it should "remove only one doucment" in 
     Await.result(
       TestCollection
@@ -291,6 +291,17 @@ class CollectionTest
            TestCollection
              .all(Json.obj())
              .map(r => r.size should be (99))
+        }),
+      testTimeout) 
+      
+  it should "insert a document" in 
+    Await.result(
+      TestCollection
+        .insert(Json.obj("inserted" -> "11:24 2017-02-10"))
+        .flatMap(r => {
+           TestCollection
+             .all(Json.obj("inserted" -> "11:24 2017-02-10"))
+             .map(r => r.size should be (1))
         }),
       testTimeout) 
       
