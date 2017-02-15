@@ -1,4 +1,4 @@
-# Reactivemongo Shortcuts for Play and JSON
+# Reactivemongo Shortcuts for Play (with JSON)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.andriykuba/reactivemongo-shortcuts-play-json/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.andriykuba/reactivemongo-shortcuts-play-json)
 
