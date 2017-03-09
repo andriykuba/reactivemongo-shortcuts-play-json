@@ -6,6 +6,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import scala.reflect.ClassTag
 import play.api.libs.json.JsArray
+import play.api.libs.json.JsNumber
 
 /**
  * Shortcuts for the different operations with fields
@@ -103,6 +104,15 @@ object FieldShortcuts {
   
   object Projection{
     def include(name: String*) = Json.toJson(name.map(n => (n -> 1)).toMap).as[JsObject]
+    
+    def exclude(name: String*) = Json.toJson(name.map(n => (n -> 0)).toMap).as[JsObject] 
+    
+    /**
+     * Do the same as `exclude` but also exclude "_id" field
+     */
+    def supress(name: String*) = 
+      Json.toJson(name.map(n => (n -> 0)).toMap).as[JsObject] + 
+      ("_id" -> JsNumber(0))
   }
   
   /**
