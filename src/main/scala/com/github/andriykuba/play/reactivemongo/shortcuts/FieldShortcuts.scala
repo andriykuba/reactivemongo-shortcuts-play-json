@@ -153,6 +153,8 @@ object FieldShortcuts {
     
     def seqStringOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).map(_.as[String])
     
+    def seqRegexOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).map(_.as[String].r)
+    
     def list(j: JsObject, name: String) = seq(j, name).toList
     
     def listOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).toList
@@ -161,7 +163,10 @@ object FieldShortcuts {
       seqJsonOrEmpty(j: JsObject, name: String).toList
       
     def listStringOrEmpty(j: JsObject, name: String) = 
-      seqStringOrEmpty(j: JsObject, name: String).toList  
+      seqStringOrEmpty(j: JsObject, name: String).toList
+      
+    def listRegexOrEmpty(j: JsObject, name: String) = 
+      seqRegexOrEmpty(j: JsObject, name: String).toList   
   }
 
 }
