@@ -17,6 +17,7 @@ import reactivemongo.play.json.collection.JSONCollection
 import reactivemongo.api.CursorProducer
 import com.github.andriykuba.play.reactivemongo.shortcuts.FieldShortcuts.Command
 import com.github.andriykuba.play.reactivemongo.shortcuts.exceptions.DocumentAlreadyExists
+import reactivemongo.api.Cursor
 
 /**
  * Shortcut of the `JSONCollection` 
@@ -79,7 +80,7 @@ trait Collection extends CursorProducerEnchanceImplicit{
       projection: Option[JsObject] = None, 
       sort: Option[JsObject] = None)
       (implicit mongo: ReactiveMongoApi, ec: ExecutionContext)
-      : Future[CursorProducer[JsObject]#ProducedCursor] = 
+      : Future[Cursor[JsObject]] = 
     collection().map{
       sort match{
         case Some(s) => findProjection(_, selector, projection).sort(s).cursor[JsObject]()

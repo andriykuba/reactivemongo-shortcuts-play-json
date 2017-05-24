@@ -50,7 +50,13 @@ object FieldShortcuts {
     
     def absent(name: String) = 
       Json.obj(name -> Json.obj("$exists" -> false)) 
-    
+
+    def !=(name: String, value: String) = 
+      Json.obj(name -> Json.obj("$ne" -> value))
+      
+    def !=(name: String, value: Int) = 
+      Json.obj(name -> Json.obj("$ne" -> value))      
+      
     def <=(name: String, value: Instant) = 
       Json.obj(name -> Json.obj("$lte" -> value))
     

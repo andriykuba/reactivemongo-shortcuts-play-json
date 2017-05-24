@@ -37,7 +37,7 @@ Scala language.
 
 Add the library in `built.sbt`
 ```scala
-libraryDependencies += "com.github.andriykuba" % "play-handlebars" % "2.5.14" 
+libraryDependencies += "com.github.andriykuba" % "reactivemongo-shortcuts-play-json" % "2.5.16"
 ```
 
 ## Usage

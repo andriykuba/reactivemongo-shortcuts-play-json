@@ -17,7 +17,7 @@ trait CursorProducerEnchanceImplicit{
    * Shortcuts of the Cursor
    */
   private[shortcuts] implicit class CursorProducerEnchance(
-      cursorProducer: Future[CursorProducer[JsObject]#ProducedCursor]){
+      cursorProducer: Future[Cursor[JsObject]]){
   
     /**
      * Collection of all founded documents.
