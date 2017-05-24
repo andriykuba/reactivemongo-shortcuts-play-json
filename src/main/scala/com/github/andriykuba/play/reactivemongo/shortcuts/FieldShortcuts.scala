@@ -124,7 +124,7 @@ object FieldShortcuts {
   /**
    * Allow dot notation
    * 
-   * Values.string(jsObject, "some.data.inside")
+   * Value.string(jsObject, "some.data.inside")
    * 
    */
   object Value{
@@ -151,12 +151,17 @@ object FieldShortcuts {
       
     def seqJsonOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).map(_.as[JsObject])
     
+    def seqStringOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).map(_.as[String])
+    
     def list(j: JsObject, name: String) = seq(j, name).toList
     
     def listOrEmpty(j: JsObject, name: String) = seqOrEmpty(j, name).toList
     
     def listJsonOrEmpty(j: JsObject, name: String) = 
       seqJsonOrEmpty(j: JsObject, name: String).toList
+      
+    def listStringOrEmpty(j: JsObject, name: String) = 
+      seqStringOrEmpty(j: JsObject, name: String).toList  
   }
 
 }
