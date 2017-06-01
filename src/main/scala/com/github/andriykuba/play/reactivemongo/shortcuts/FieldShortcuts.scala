@@ -139,13 +139,19 @@ object FieldShortcuts {
     def string(j: JsObject, name: String, default: String) = 
       getOpt[String](j, name).getOrElse(default)
     
-    def stringOrEmpty(j: JsObject, name: String) = getOpt[String](j, name).getOrElse("")
+    def stringOrEmpty(j: JsObject, name: String) = string(j, name, "")
     
     def int(j: JsObject, name: String) = get[Int](j, name)
     
     def int(j: JsObject, name: String, default: Int) = getOpt[Int](j, name).getOrElse(default)
     
+    def intOrZero(j: JsObject, name: String) = int(j, name, 0)
+    
     def boolean(j: JsObject, name: String) = get[Boolean](j, name)
+
+    def boolean(j: JsObject, name: String, default: Boolean) = getOpt[Boolean](j, name).getOrElse(default)
+
+    def booleanOrFalse(j: JsObject, name: String) = boolean(j, name, false)
     
     def jsValue(j: JsObject, name: String) = get[JsValue](j, name)
     
