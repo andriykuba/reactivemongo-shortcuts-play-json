@@ -36,10 +36,20 @@ Scala language.
 ## Install
 
 Add the library in `built.sbt`
+
+Play 2.6, Scala 2.11
+
 ```scala
-libraryDependencies += "com.github.andriykuba" % "reactivemongo-shortcuts-play-json" % "2.5.19"
+libraryDependencies += "com.github.andriykuba" % "reactivemongo-shortcuts-play-json" % "2.6.1"
+
 ```
 
+Play 2.5, Scala 2.11
+
+```scala
+libraryDependencies += "com.github.andriykuba" % "reactivemongo-shortcuts-play-json" % "2.5.19" 
+```
+    
 ## Usage
 
 Suppose, we want to get some field from all documents. 

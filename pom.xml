@@ -7,7 +7,7 @@
   <artifactId>reactivemongo-shortcuts-play-json</artifactId>
   <packaging>jar</packaging>
   <name>Reactivemongo Shortcuts for Play and JSON</name>
-  <version>2.5.19</version>
+  <version>2.6.1</version>
   <description>Short methods for different reactivemongo scenarios, created for Play and JSON</description>
   <url>https://github.com/andriykuba/reactivemongo-shortcuts-play-json</url>
   
@@ -60,10 +60,11 @@
   </repositories>
   
   <properties>
-    <play.version>2.5.15</play.version>
+    <play.version>2.6.1</play.version>
+    <play.json.version>2.6.2</play.json.version>
     <java.version>1.8</java.version>
     <scala.binary.version>2.11</scala.binary.version>
-    <reactivemongo.version>0.12.3</reactivemongo.version>
+    <reactivemongo.version>0.12.5-play26</reactivemongo.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
@@ -78,7 +79,7 @@
     <dependency>
       <groupId>com.typesafe.play</groupId>
       <artifactId>play-json_2.11</artifactId>
-      <version>${play.version}</version>
+      <version>${play.json.version}</version>
       <scope>provided</scope>
     </dependency>
     
@@ -101,7 +102,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.8.9</version>
+      <version>2.8.47</version>
       <scope>test</scope>
     </dependency>
     
@@ -122,7 +123,7 @@
     <dependency>
       <groupId>org.scalatestplus.play</groupId>
       <artifactId>scalatestplus-play_2.11</artifactId>
-      <version>2.0.0</version>
+      <version>3.1.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -150,7 +151,7 @@
     <dependency>
         <groupId>org.mongodb.scala</groupId>
         <artifactId>mongo-scala-driver_2.11</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
         <scope>test</scope>
     </dependency>
     
